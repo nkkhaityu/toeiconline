@@ -1,4 +1,4 @@
 package wad.project.api.test;
 
-public class ApiTest {
+public class LoginTest {
 }
