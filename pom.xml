@@ -22,6 +22,7 @@
         <module>toeic-core-persistence-data</module>
         <module>toeic-core-web</module>
         <module>toeic-core-test</module>
+        <module>toeic-api-test</module>
     </modules>
 
     <properties>
