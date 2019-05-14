@@ -21,7 +21,6 @@
         <module>toeic-core-common</module>
         <module>toeic-core-persistence-data</module>
         <module>toeic-core-web</module>
-        <module>toeic-core-test</module>
         <module>toeic-api-test</module>
     </modules>
 
@@ -35,6 +34,7 @@
         <sitemesh.version>2.4.2</sitemesh.version>
         <jstl.version>1.2</jstl.version>
         <beanutils.version>1.9.3</beanutils.version>
+        <displaytag.version>1.2</displaytag.version>
     </properties>
 
     <dependencies>
@@ -98,6 +98,22 @@
             <version>${beanutils.version}</version>
         </dependency>
 
+        <!-- Display tag-->
+        <dependency>
+            <groupId>displaytag</groupId>
+            <artifactId>displaytag</artifactId>
+            <version>${displaytag.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jcl104-over-slf4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
 </project>
