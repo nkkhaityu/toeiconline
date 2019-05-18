@@ -2,7 +2,10 @@ package wad.project.controller.admin;
 
 import wad.project.command.ListenGuidelineCommand;
 import wad.project.core.dto.ListenGuidelineDTO;
+import wad.project.core.service.ListenGuidelineService;
+import wad.project.core.service.impl.ListenGuidelineServiceImpl;
 import wad.project.core.web.common.WebConstant;
+import wad.project.core.web.utils.RequestUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,28 +14,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/admin-guideline-listen-list.html")
 public class ListenGuidelineController extends HttpServlet {
+    private ListenGuidelineService guidelineService = new ListenGuidelineServiceImpl();
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ListenGuidelineCommand command = new ListenGuidelineCommand();
-        List<ListenGuidelineDTO> listenGuidelineDTOS = new ArrayList<ListenGuidelineDTO>();
-        ListenGuidelineDTO dto = new ListenGuidelineDTO();
-        dto.setTitle("Listen Guideline 1");
-        dto.setContent("Content Guideline 1");
-        listenGuidelineDTOS.add(dto);
-        ListenGuidelineDTO dto2 = new ListenGuidelineDTO();
-        dto2.setTitle("Listen Guideline 2");
-        dto2.setContent("Content Guideline 2");
-        listenGuidelineDTOS.add(dto2);
-        command.setListResult(listenGuidelineDTOS);
-        command.setMaxPageItems(1);
-        command.setTotalItems(listenGuidelineDTOS.size());
+        command.setMaxPageItems(2);
+        RequestUtil.initSearchBean(request, command);
+        Object[] objects = guidelineService.findListenGuidelineByProperties(null, null, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
+        command.setListResult((List<ListenGuidelineDTO>) objects[1]);
+        command.setTotalItems(Integer.parseInt(objects[0].toString()));
         request.setAttribute(WebConstant.LIST_ITEMS, command);
-
         RequestDispatcher rd = request.getRequestDispatcher("/views/admin/listenguideline/list.jsp");
         rd.forward(request, response);
     }
