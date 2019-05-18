@@ -2,7 +2,8 @@
 <suite name="TestAll">
     <test name="casel">
         <classes>
-            <class name="wad.project.core.test.RoleTest" />
+            <class name="wad.project.api.test.LoginTest"/>
+            <class name="wad.project.api.test.ListenGuidelineTest"/>
         </classes>
     </test>
 </suite>
