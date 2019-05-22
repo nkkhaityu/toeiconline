@@ -15,9 +15,17 @@ public class AbstractCommand<T> {
     private String[] checkList;
     private String messageResponse;
     private int page = 1;
-//    private String urlType;
+    private String urlType;
 //    private int totalPages;
-    
+
+    public String getUrlType() {
+        return urlType;
+    }
+
+    public void setUrlType(String urlType) {
+        this.urlType = urlType;
+    }
+
     public T getPojo() {
         return pojo;
     }
