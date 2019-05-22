@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="/common/taglib.jsp"%>
+<%@ include file="/common/taglib.jsp" %>
+<c:url var="editUserUrl" value="/ajax-user-edit.html">
+    <c:param name="urlType" value="url_edit"/>
+</c:url>
 <html>
 <head>
     <title><fmt:message key="label.user.management" bundle="${lang}"/></title>
@@ -9,7 +12,10 @@
     <div class="main-content-inner">
         <div class="breadcrumbs" id="breadcrumbs">
             <script type="text/javascript">
-                try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                try {
+                    ace.settings.check('breadcrumbs', 'fixed')
+                } catch (e) {
+                }
             </script>
 
             <ul class="breadcrumb">
@@ -36,13 +42,18 @@
                             <div class="table-btn-controls">
                                 <div class="pull-right tableTools-container">
                                     <div class="dt-buttons btn-overlap btn-group">
-                                        <a flag="info" class="dt-button buttons-colvis btn btn-white btn-primary btn-bold">
+                                        <a flag="info"
+                                           class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
+                                           id="btnAddUser">
                                                 <span>
                                                     <i class="fa fa-plus-circle bigger-110 purple"></i>
                                                 </span>
                                         </a>
-                                        <button type="button" class="dt-button buttons-html5 btn btn-white btn-primary btn-bold" id="deleteAll" disabled
-                                                data-toggle="tooltip" title="<fmt:message key='label.delete.all' bundle='${lang}'/>">
+                                        <button type="button"
+                                                class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
+                                                id="deleteAll" disabled
+                                                data-toggle="tooltip"
+                                                title="<fmt:message key='label.delete.all' bundle='${lang}'/>">
                                                  <span>
                                                     <i class="fa fa-trash-o bigger-110 pink"></i>
                                                 </span>
@@ -54,19 +65,24 @@
                     </div>
                     <div class="table-responsive">
                         <fmt:bundle basename="ApplicationResources">
-                            <display:table id="tableList" name="items.listResult" partialList="true" size="${items.totalItems}"
+                            <display:table id="tableList" name="items.listResult" partialList="true"
+                                           size="${items.totalItems}"
                                            pagesize="${items.maxPageItems}" sort="external" requestURI="${requestUrl}"
                                            class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
                                            style="margin: 3em 0 1.5em;">
                                 <display:column title="<fieldset class='form-group'>
 												        <input type='checkbox' id='checkAll' class='check-box-element'>
-												        </fieldset>" class="center select-cell" headerClass="center select-cell">
+												        </fieldset>" class="center select-cell"
+                                                headerClass="center select-cell">
                                     <fieldset>
-                                        <input type="checkbox" name="checkList" id="checkbox_${tableList.userId}" value="${tableList.userId}" class="check-box-element"/>
+                                        <input type="checkbox" name="checkList" id="checkbox_${tableList.userId}"
+                                               value="${tableList.userId}" class="check-box-element"/>
                                     </fieldset>
                                 </display:column>
-                                <display:column property="name" titleKey="label.user.name" sortable="true" sortName="name"/>
-                                <display:column property="fullName" titleKey="label.user.fullname" sortable="true" sortName="fullName"/>
+                                <display:column property="name" titleKey="label.user.name" sortable="true"
+                                                sortName="name"/>
+                                <display:column property="fullName" titleKey="label.user.fullname" sortable="true"
+                                                sortName="fullName"/>
                             </display:table>
                         </fmt:bundle>
                     </div>
@@ -75,5 +91,17 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog"></div>
+<script>
+    $(document).ready(function () {
+        $('#btnAddUser').click(function () {
+            var editUrl = '${editUserUrl}';
+            $('#myModal').load(editUrl, '', function () {
+                $('#myModal').modal('toggle');
+            });
+        });
+    });
+</script>
 </body>
 </html>
