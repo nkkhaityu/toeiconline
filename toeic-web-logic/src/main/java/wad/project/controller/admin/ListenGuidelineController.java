@@ -59,17 +59,21 @@ public class ListenGuidelineController extends HttpServlet {
         UploadUtil uploadUtil = new UploadUtil();
         HttpSession session = request.getSession();
         Set<String> valueTitle = buildSetValueListenGuideline();
-        try {
+       /* try {
             Object[] objects = uploadUtil.writeOrUpdateFile(request, valueTitle, WebConstant.LISTENGUIDELINE);
             Map<String, String> mapValue = (Map<String, String>) objects[3];
             command = returnValueListenGuidelineCommand(valueTitle, command, mapValue);
             session.setAttribute(WebConstant.ALERT, WebConstant.TYPE_SUCCESS);
             session.setAttribute(WebConstant.MESSAGE_RESPONSE, bundle.getString("label.guideline.listen.add.success"));
+        } catch (FileUploadException e) {
+            log.error(e.getMessage(), e);
+            session.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
+            session.setAttribute(WebConstant.MESSAGE_RESPONSE, bundle.getString("label.error"));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             session.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
             session.setAttribute(WebConstant.MESSAGE_RESPONSE, bundle.getString("label.error"));
-        }
+        }*/
         response.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list");
     }
 
