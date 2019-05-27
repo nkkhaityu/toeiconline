@@ -9,6 +9,9 @@ import wad.project.core.dao.UserDao;
 import wad.project.core.data.daoimpl.AbstractDao;
 import wad.project.core.persistence.entity.UserEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class UserDaoImpl extends AbstractDao<Integer, UserEntity> implements UserDao {
     public Object[] checkLogin(String name, String password) {
@@ -33,5 +36,23 @@ public class UserDaoImpl extends AbstractDao<Integer, UserEntity> implements Use
             session.close();
         }
         return new Object[]{isUserExist, roleName};
+    }
+
+    public List<UserEntity> findByUsers(List<String> names) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        List<UserEntity> userEntities = new ArrayList<UserEntity>();
+        try {
+            StringBuilder sql = new StringBuilder(" FROM UserEntity ue WHERE ue.name IN(:names) ");
+            Query query = session.createQuery(sql.toString());
+            query.setParameterList("names", names);
+            userEntities = query.list();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+        return userEntities;
     }
 }

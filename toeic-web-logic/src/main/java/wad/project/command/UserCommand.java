@@ -2,6 +2,7 @@ package wad.project.command;
 
 import wad.project.core.dto.RoleDTO;
 import wad.project.core.dto.UserDTO;
+import wad.project.core.dto.UserImportDTO;
 import wad.project.core.web.command.AbstractCommand;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class UserCommand extends AbstractCommand<UserDTO> {
     private String confirmPassword;
     private List<RoleDTO> roles;
     private Integer roleId;
+    private List<UserImportDTO> userImportDTOS;
 
     public String getConfirmPassword() {
         return confirmPassword;
@@ -36,5 +38,13 @@ public class UserCommand extends AbstractCommand<UserDTO> {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
+    }
+
+    public List<UserImportDTO> getUserImportDTOS() {
+        return userImportDTOS;
+    }
+
+    public void setUserImportDTOS(List<UserImportDTO> userImportDTOS) {
+        this.userImportDTOS = userImportDTOS;
     }
 }

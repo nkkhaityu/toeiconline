@@ -1,7 +1,10 @@
 package wad.project.core.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import wad.project.core.dto.CheckLogin;
 import wad.project.core.dto.UserDTO;
+import wad.project.core.dto.UserImportDTO;
+import wad.project.core.persistence.entity.RoleEntity;
 import wad.project.core.persistence.entity.UserEntity;
 import wad.project.core.service.UserService;
 import wad.project.core.service.utils.SingletonDaoUtil;
@@ -9,6 +12,7 @@ import wad.project.core.utils.UserBeanUtil;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,5 +58,71 @@ public class UserServiceImpl implements UserService {
             }
         }
         return checkLogin;
+    }
+
+    public void validateImportUser(List<UserImportDTO> userImportDTOS) {
+        List<String> names = new ArrayList<String>();
+        List<String> roles = new ArrayList<String>();
+
+        for(UserImportDTO item: userImportDTOS) {
+            if (item.isValid()) {
+                names.add(item.getUserName());
+                if (!roles.contains(item.getRoleName())) {
+                    roles.add(item.getRoleName());
+                }
+            }
+        }
+
+        Map<String, UserEntity> userEntityMap = new HashMap<String, UserEntity>();
+        Map<String, RoleEntity> roleEntityMap = new HashMap<String, RoleEntity>();
+        if (names.size() > 0) {
+            List<UserEntity> userEntities = SingletonDaoUtil.getUserDaoInstance().findByUsers(names);
+            for (UserEntity item: userEntities) {
+                userEntityMap.put(item.getName().toUpperCase(), item);
+            }
+        }
+        if (roles.size() > 0) {
+            List<RoleEntity> roleEntities = SingletonDaoUtil.getRoleDaoInstance().findByRoles(roles);
+            for (RoleEntity item: roleEntities) {
+                roleEntityMap.put(item.getName().toUpperCase(), item);
+            }
+        }
+
+        for (UserImportDTO item: userImportDTOS) {
+            String message = item.getError();
+            if (item.isValid()) {
+                UserEntity userEntity = userEntityMap.get(item.getUserName().toUpperCase());
+                if (userEntity != null) {
+                    message += "<br/>";
+                    message += "tên đăng nhập tồn tại";
+                }
+
+                RoleEntity roleEntity = roleEntityMap.get(item.getRoleName().toUpperCase());
+                if (roleEntity == null) {
+                    message += "<br/>";
+                    message += "Vai trò không tồn tại";
+                }
+                if (StringUtils.isNotBlank(message)) {
+                    item.setValid(false);
+                    item.setError(message.substring(5));
+                }
+            }
+        }
+    }
+
+    public void saveUserImport(List<UserImportDTO> userImportDTOS) {
+        for (UserImportDTO item: userImportDTOS) {
+            if (item.isValid()) {
+                UserEntity userEntity = new UserEntity();
+                userEntity.setName(item.getUserName());
+                userEntity.setFullName(item.getFullName());
+                userEntity.setPassword(item.getPassword());
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                userEntity.setCreatedDate(timestamp);
+                RoleEntity roleEntity = SingletonDaoUtil.getRoleDaoInstance().findEqualUnique("name", item.getRoleName().toUpperCase());
+                userEntity.setRoleEntity(roleEntity);
+                SingletonDaoUtil.getUserDaoInstance().save(userEntity);
+            }
+        }
     }
 }
