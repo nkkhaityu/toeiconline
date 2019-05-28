@@ -8,7 +8,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import wad.project.core.common.constant.CoreConstant;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
