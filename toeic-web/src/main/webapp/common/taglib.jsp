@@ -2,4 +2,4 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="dec" uri="http://www.opensymphony.com/sitemesh/decorator" %>
 <%@ taglib prefix="display" uri="http://displaytag.sf.net" %>
-<fmt:setBundle basename="ApplicationResources" var="lang"/>
+<fmt:setBundle basename="ResourcesBundle" var="lang"/>
